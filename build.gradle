@@ -1,0 +1,63 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'org.akhikhl.gretty'
+
+
+group 'com.zrq.gadle'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+    }
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:+'
+    }
+}
+
+gretty {
+    // 端口默认8080
+    // serlvetContainer 支持 jetty7/8/9，tomcat7/8
+    // contextPath 设置根路径，默认为项目名称
+    httpPort = 8080
+    contextPath = '/Web'
+    host = "localhost"
+    httpEnabled = true
+    servletContainer = "tomcat8"
+    scanInterval = 1
+    fastReload = true
+    loggingLevel="DEBUG"
+    consoleLogEnabled=true
+    debugPort=8888
+    debugSuspend=true
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.mybatis', name: 'mybatis', version: '3.4.6'
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
+    // https://mvnrepository.com/artifact/org.springframework/spring-beans
+    compile group: 'org.springframework', name: 'spring-beans', version: '4.3.9.RELEASE'
+    // https://mvnrepository.com/artifact/org.springframework/spring-context
+
+}
+
+tasks.withType(JavaCompile){
+    options.encoding="UTF-8"
+}
+[compileJava,javadoc,compileTestJava]*.options*.encoding="UTF-8"
+
